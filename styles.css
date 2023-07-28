@@ -1,0 +1,33 @@
+html { 
+    background-color:#9cd2e6;
+}
+body {
+    width: 600px;
+    margin: 0 auto;
+    background-color: #dce2a0;
+    padding: 0 20px 20px 20px;
+    border: 20px solid rgba(255, 255, 255, 0.583);
+}
+h1 {
+    text-align: center;
+    margin: 0;
+    padding: 20px 0;
+    color: #ff4800;
+    text-shadow: 3px 3px 1px black;
+}
+img {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10;
+    margin-bottom: 10;
+}
+img {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#heading {
+    color: blue;
+}  
+.popular{
+    border: 4px dotted red;
+}

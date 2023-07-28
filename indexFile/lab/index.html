@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div {
+            background-color: blue;
+            height: 100px;
+            width: 25%;
+            float: left;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        for (let i = 1; i <= 16; i++) {
+            let myDiv = document.createElement("div");
+            document.body.appendChild(myDiv);
+        }
+
+        let firstOutputColor; // Variable to store the first output color
+
+        function random(number) {
+            return Math.floor(Math.random() * number);
+        }
+
+        function bgChange() {
+            let rndColors = "rgb(" + random(255) + "," + random(255) + "," + random(255) + ")";
+            return rndColors;
+        }
+
+        var divs = document.querySelectorAll("div");
+        for (let i = 0; i < divs.length; i++) {
+            divs[i].onclick = function (e) {
+                // If firstOutputColor is undefined, generate the first output color
+                if (!firstOutputColor) {
+                    firstOutputColor = bgChange();
+                }
+
+                // Get the index of the clicked div
+                let index = Array.from(divs).indexOf(e.target);
+
+                // Check if the index is in column 2 or 4 (indexes 1 and 3, since it's zero-based)
+                if (index % 4 === 1 || index % 4 === 3) {
+                    e.target.style.backgroundColor = firstOutputColor;
+                } else {
+                    e.target.style.backgroundColor = bgChange();
+                }
+            };
+        }
+    </script>
+</body>
+</html>

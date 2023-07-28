@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <title>Positive Integer Input</title>
+  <style>li{
+    font-size: large;
+}
+  </style>
+  <script>
+    window.onload = function() {
+      validateInput();
+    }
+
+    function validateInput() {
+      var input = prompt("Enter a Positive Integer");
+      if (!Number.isInteger(Number(input)) || Number(input) <= 0) {
+        alert("Please enter a valid positive integer!");
+        validateInput(); // Prompt again if the input is invalid
+      } else {
+        showPrimes(Number(input));
+      }
+    }
+
+    function showPrimes(input) {
+      var primes = [];
+      for (let i = 2; i <= input; i++) {
+        if (isPrime(i)) {
+          primes.push(i);
+        }
+      }
+      alert("Prime numbers : "+primes.join(', '));
+    }
+
+    function isPrime(num) {
+      for (let i = 2; i < num; i++) {
+        if (num % i === 0) {
+          return false;
+        }
+      }
+      return num > 1;
+    }
+  </script>
+</head>
+<body>
+  <h1 style="text-align: center;">Prime Numbers  Finder</h1>
+  <h3>Write the web app to prompt accepting for a positive integer number</h3>
+  <ul>
+
+    <li >If the entered text is not a positive integer number, then the web app will keep asking for a number until the valid positive integer is entered</li>
+    <li>If the entered text is a positive integer, then the app will print prime numbers that are not greater than that given positive integer </li>
+  </ul>
+  <h3>Hint:</h3>
+  <ol>
+    <li>you may want to use loop with label</li>
+    <li>you may want to use array with push function</li>
+  </ol>
+</body>
+</html>
