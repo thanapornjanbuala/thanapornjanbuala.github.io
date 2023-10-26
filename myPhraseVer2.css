@@ -1,0 +1,115 @@
+body{
+    background-image: url("images/myP.jpg");
+    background-size:cover;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
+  }
+  .parent {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+    max-height: 2px;
+    }
+    
+    .div1 { 
+        grid-area: 1 / 5 / 2 / 18; 
+        text-shadow: 2px 2px 4px rgb(255, 255, 255);
+        text-align: center;
+        background-color: rgba(169, 21, 195, 0);
+        border-radius: 20cqmax;
+        padding: 0 0 0 0;
+  
+    }
+    .div2 { grid-area: 3 / 3 / 4 / 6; 
+        border-radius: 2cqmax;
+        justify-content: center;
+        display: flex;
+        font-size: 15px;
+        background-color: rgb(179, 179, 179);
+        padding-top: 5px;
+        font-weight: bold;
+        border: dashed;
+        font-size: large;
+    }
+    .div3 { 
+        grid-area: 3 / 7 / 4 / 16; 
+        background-color: #76767680;
+        border-radius: 2cqmax;
+        justify-content: center;
+        display: flex;
+  
+    }
+    .div4 { 
+        grid-area: 5 / 3 / 6 / 6;
+        background-color: rgba(255, 255, 255, 0.088); 
+        text-align: center;
+        padding: 20px;
+        border-radius: 10cqmin;
+        font-size: medium;
+    }
+    .div5 { 
+        grid-area: 6 / 3 / 7 / 6; 
+    }
+    .div6 { 
+        grid-area: 7 / 3 / 8 / 6; 
+    }
+    .div7 { 
+        grid-area: 2/ 16 / 6/ 18 ;
+        background-color: rgba(130, 112, 112, 0);
+        border-radius: 50cqmin;
+        text-align: center;
+        padding-top: 120px;
+    }
+    .div8 { grid-area: 8 / 17 / 9 / 19; background-color: aliceblue;}
+    .div9 { grid-area: 10 / 17 / 11 / 19; background-color: aliceblue;}
+    .div10 { grid-area: 12 / 17 / 13 / 19; background-color: aliceblue;}
+    .div11 { 
+        grid-area: 15 / 7 / 17 / 16;
+        background-color: rgba(179, 179, 179, 0.615);
+        height: 20cqmin;
+        text-align: center;
+        padding-top: 50px;
+        border-radius: 3cqmin;
+    }
+    .div12 { grid-area: 15 / 10 / 16 / 13; 
+        background-color: rgb(99, 95, 58);
+        height: 7cqmin;
+        text-align: center;
+        border-radius: 3cqmin;
+        }
+    .div13 { 
+        grid-area: 9 / 3 / 10 / 6;
+        background-color: rgb(211, 211, 211);
+        border-radius: 3cqmin; 
+        text-align: center;
+        padding: 10px;
+    }
+    .div14 { 
+        grid-area: 11 / 3 / 19 / 6; 
+        background-color: rgba(92, 115, 135, 0);
+        
+    }
+    .div15 {
+         grid-area: 5 / 7 / 14 / 16; 
+         background-color: rgb(250, 250, 250);
+         border-radius: 3cqmin;
+         padding-top: 10px;
+         text-align: center;
+        }
+  p{
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-shadow: #ff00f7;
+  }
+  button{
+    background:#e2e2e2 ;
+    color: rgb(0, 0, 0);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 17px;
+    font-weight: bold;
+    border: dashed;
+    border-radius: 50px;
+    text-align: center;
+  }
