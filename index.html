@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,4 +17,103 @@
         </h3></div>
     </div>
 </body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Input Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #firstPart,
+        #secondPart {
+            font-size: 18px;
+            white-space: pre-line;
+            /* Preserve line breaks in text content */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <label for="textInput">ป้อนข้อความ:</label>
+        <input type="text" id="textInput" placeholder="พิมพ์ข้อความที่นี่">
+        <button onclick="displayText()">แสดงข้อความ</button>
+    </div>
+
+    <p id="firstPart"></p>
+    <button onclick="copyToClipboard('firstPart')">คัดลอกส่วนที่ 1</button>
+
+    <p id="secondPart"></p>
+    <button onclick="copyToClipboard('secondPart')">คัดลอกส่วนที่ 2</button>
+
+    <script>
+        function displayText() {
+            const userInput = document.getElementById("textInput").value;
+
+            // แบ่งตัวอักษรออกเป็นสองส่วน
+            const firstPart = userInput.replace(/ /g, '').substring(0, 81);  // 81 ตัวอักษรแรกไม่นับช่องว่าง
+
+            // แสดงผลลัพธ์ส่วนที่ 1
+            document.getElementById("firstPart").innerText = '';
+
+            // Display the first part in 9 rows, each containing 9 characters
+            for (let i = 0; i < 9; i++) {
+                const row = firstPart.substring(i * 9, (i + 1) * 9);
+                document.getElementById("firstPart").innerText += '\n,' + row;
+            }
+
+            // แสดงผลลัพธ์ส่วนที่ 2 (เหมือนเดิม)
+            const secondPartWords = userInput.split(" ").slice(-10).join(","); // 10 คำสุดท้าย
+            document.getElementById("secondPart").innerText = ' ' + secondPartWords;
+        }
+
+        function copyToClipboard(elementId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            const dummyTextArea = document.createElement("textarea");
+            document.body.appendChild(dummyTextArea);
+            dummyTextArea.value = textToCopy;
+            dummyTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummyTextArea);
+        }
+    </script>
+</body>
+
 </html>
