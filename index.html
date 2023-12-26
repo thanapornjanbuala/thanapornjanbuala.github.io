@@ -175,52 +175,58 @@
             transition: background-color 0.3s ease;
         }
 
-        #output {
-            margin-top: 20px;
-        }
-
         .output-item {
             margin-bottom: 10px;
         }
 
         .highlight-1 {
-            background-color: yellow;
+            background-color: rgb(255, 0, 0);
+            /* Red */
         }
 
         .highlight-2 {
-            background-color: lightblue;
+            background-color: rgb(0, 255, 0);
+            /* Green */
         }
 
         .highlight-3 {
-            background-color: lightgreen;
+            background-color: rgb(0, 0, 255);
+            /* Blue */
         }
 
         .highlight-4 {
-            background-color: lightcoral;
+            background-color: rgb(255, 255, 0);
+            /* Yellow */
         }
 
         .highlight-5 {
-            background-color: lightpink;
+            background-color: rgb(255, 0, 255);
+            /* Magenta */
         }
 
         .highlight-6 {
-            background-color: rgb(57, 130, 130);
+            background-color: rgb(0, 255, 255);
+            /* Cyan */
         }
 
         .highlight-7 {
-            background-color: lightsalmon;
+            background-color: rgb(255, 128, 0);
+            /* Orange */
         }
 
         .highlight-8 {
-            background-color: rgb(186, 92, 131);
+            background-color: rgb(128, 0, 255);
+            /* Purple */
         }
 
         .highlight-9 {
-            background-color: rgb(223, 135, 250);
+            background-color: rgb(128, 128, 128);
+            /* Gray */
         }
 
         .highlight-10 {
-            background-color: rgb(202, 45, 184);
+            background-color: rgb(0, 128, 0);
+            /* Dark Green */
         }
     </style>
 </head>
@@ -237,7 +243,7 @@
 
     <script>
         function displayText() {
-            const userInput = document.getElementById("textInput").value;
+            const userInput = document.getElementById("textInput").value.toUpperCase();
             const firstPart = userInput.replace(/ /g, '').substring(0, 81);
             const secondPartWords = userInput.split(" ").slice(-10);
 
@@ -260,11 +266,13 @@
             const outputContainer = document.getElementById("output");
             outputContainer.innerHTML = '';
             const solution = solveWordSearch(matrixData, secondPartWords);
-            solution.forEach((result, index) => {
+            solution.forEach((result) => {
+                const highlightClass = result.highlightClass;
+                highlightWord(result.positions, result.row, result.col, highlightClass);
+
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'output-item';
                 const foundText = result.found ? 'true' : 'false';
-                const highlightClass = `highlight-${index + 1}`;
                 resultDiv.innerHTML = `Word: <span class="${result.found ? highlightClass : ''}">${result.word}</span>, Found: ${foundText}`;
                 if (result.found) {
                     resultDiv.innerHTML += `, First Letter: [${result.firstLetter}], Last Letter: [${result.lastLetter}]`;
@@ -275,11 +283,11 @@
 
         function solveWordSearch(matrix, wordsToFind) {
             const solutions = [];
-            wordsToFind.forEach(word => {
+            wordsToFind.forEach((word, index) => {
                 const sanitizedWord = word.replace(/_/g, '');
 
                 const result = findWord(matrix, sanitizedWord);
-                solutions.push(result);
+                solutions.push({ ...result, highlightClass: `highlight-${index + 1}` });
             });
             return solutions;
         }
@@ -315,12 +323,14 @@
                         }
 
                         if (found) {
-                            highlightWord(positions, row, col);
                             return {
                                 word: word,
                                 found: true,
                                 firstLetter: [row, col],
-                                lastLetter: positions[positions.length - 1]
+                                lastLetter: positions[positions.length - 1],
+                                positions: positions,
+                                row: row,
+                                col: col
                             };
                         }
                     }
@@ -333,12 +343,13 @@
             };
         }
 
-        function highlightWord(positions, row, col) {
-            const highlightClass = `highlight-${positions.length}`;
-            positions.forEach(pos => {
+        function highlightWord(positions, row, col, highlightClass) {
+            positions.forEach((pos, index) => {
                 const [r, c] = pos;
                 const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                cell.classList.add(highlightClass);
+                const intensity = 100 - (index * 15); // Adjust the intensity based on your preference
+                const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
+                cell.style.backgroundColor = backgroundColor;
             });
 
             // Remove highlights from previous search
@@ -346,12 +357,39 @@
                 positions.forEach(pos => {
                     const [r, c] = pos;
                     const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                    cell.classList.remove(highlightClass);
+                    cell.style.backgroundColor = ''; // Reset the background color
                 });
-            }, 3000); // Remove highlights after 3 seconds
+            }, 60000); // Remove highlights after 3 seconds
+        }
+
+        function getColorValues(highlightClass) {
+            // Returns RGB color values based on the highlightClass
+            switch (highlightClass) {
+                case 'highlight-1':
+                    return '255, 0, 0'; // Red
+                case 'highlight-2':
+                    return '0, 255, 0'; // Green
+                case 'highlight-3':
+                    return '0, 0, 255'; // Blue
+                case 'highlight-4':
+                    return '255, 255, 0'; // Yellow
+                case 'highlight-5':
+                    return '255, 0, 255'; // Magenta
+                case 'highlight-6':
+                    return '0, 255, 255'; // Cyan
+                case 'highlight-7':
+                    return '255, 128, 0'; // Orange
+                case 'highlight-8':
+                    return '128, 0, 255'; // Purple
+                case 'highlight-9':
+                    return '128, 128, 128'; // Gray
+                case 'highlight-10':
+                    return '0, 128, 0'; // Dark Green
+                default:
+                    return '255, 255, 255'; // White (default)
+            }
         }
     </script>
 </body>
 
 </html>
-
