@@ -249,9 +249,9 @@
     <script>
         function displayText() {
             const userInput = document.getElementById("textInput").value.toUpperCase();
-            const sanitizedInput = userInput.replace(/[^A-Z|]/g, (match) => (match === '|' ? 'I' : match));
-            const firstPart = sanitizedInput.replace(/ /g, '').substring(0, 81);
-            const secondPartWords = sanitizedInput.split(" ").slice(-10);
+            const sanitizedInput = userInput.replace(/[^A-Z|]/g, '');
+            const firstPart = userInput.replace(/ /g, '').substring(0, 81);
+            const secondPartWords = userInput.split(" ").slice(-10);
 
             // Create matrix and display
             const matrixContainer = document.getElementById("matrix");
