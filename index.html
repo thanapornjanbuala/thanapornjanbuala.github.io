@@ -179,6 +179,11 @@
             margin-bottom: 10px;
         }
 
+        .highlighted {
+            background-color: rgb(169, 169, 169);
+            /* Gray */
+        }
+
         .highlight-1 {
             background-color: rgb(255, 0, 0);
             /* Red */
@@ -244,15 +249,15 @@
     <script>
         function displayText() {
             const userInput = document.getElementById("textInput").value.toUpperCase();
-            const firstPart = userInput.replace(/ /g, '').substring(0, 81);
-            const secondPartWords = userInput.split(" ").slice(-10);
+            const sanitizedInput = userInput.replace(/[^A-Z|]/g, ''); // Remove characters other than A-Z and |
+            const processedInput = replacePipeWithI(sanitizedInput);
 
             // Create matrix and display
             const matrixContainer = document.getElementById("matrix");
             matrixContainer.innerHTML = '';
             const matrixData = [];
             for (let i = 0; i < 9; i++) {
-                const row = firstPart.substring(i * 9, (i + 1) * 9).split('');
+                const row = processedInput.substring(i * 9, (i + 1) * 9).split('');
                 matrixData.push(row);
                 row.forEach(cell => {
                     const cellDiv = document.createElement('div');
@@ -265,7 +270,7 @@
             // Solve word search puzzle
             const outputContainer = document.getElementById("output");
             outputContainer.innerHTML = '';
-            const solution = solveWordSearch(matrixData, secondPartWords);
+            const solution = solveWordSearch(matrixData, []);
             solution.forEach((result) => {
                 const highlightClass = result.highlightClass;
                 highlightWord(result.positions, result.row, result.col, highlightClass);
@@ -273,12 +278,16 @@
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'output-item';
                 const foundText = result.found ? 'true' : 'false';
-                resultDiv.innerHTML = `Word: <span class="${result.found ? highlightClass : ''}">${result.word}</span>, Found: ${foundText}`;
+                resultDiv.innerHTML = `Word: <span class="${result.found ? highlightClass + ' highlighted' : ''}">${result.word}</span>, Found: ${foundText}`;
                 if (result.found) {
                     resultDiv.innerHTML += `, First Letter: [${result.firstLetter}], Last Letter: [${result.lastLetter}]`;
                 }
                 outputContainer.appendChild(resultDiv);
             });
+        }
+
+        function replacePipeWithI(input) {
+            return input.replace(/\|/g, 'I');
         }
 
         function solveWordSearch(matrix, wordsToFind) {
@@ -347,7 +356,7 @@
             positions.forEach((pos, index) => {
                 const [r, c] = pos;
                 const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                const intensity = 100 - (index * 15); // Adjust the intensity based on your preference
+                const intensity = 100 - (index * 10); // Adjust the intensity based on your preference
                 const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
                 cell.style.backgroundColor = backgroundColor;
             });
@@ -360,6 +369,19 @@
                     cell.style.backgroundColor = ''; // Reset the background color
                 });
             }, 60000); // Remove highlights after 3 seconds
+
+            // Highlight the word in the list below
+            const wordList = document.querySelectorAll(`.${highlightClass}`);
+            wordList.forEach(wordItem => {
+                wordItem.classList.add('highlighted');
+            });
+
+            // Remove highlights from previous searches in the list
+            setTimeout(() => {
+                wordList.forEach(wordItem => {
+                    wordItem.classList.remove('highlighted');
+                });
+            }, 3000); // Remove highlights after 3 seconds
         }
 
         function getColorValues(highlightClass) {
