@@ -249,15 +249,16 @@
     <script>
         function displayText() {
             const userInput = document.getElementById("textInput").value.toUpperCase();
-            const sanitizedInput = userInput.replace(/[^A-Z|]/g, ''); // Remove characters other than A-Z and |
-            const processedInput = replacePipeWithI(sanitizedInput);
+            const sanitizedInput = userInput.replace(/[^A-Z|]/g, (match) => (match === '|' ? 'I' : match));
+            const firstPart = sanitizedInput.replace(/ /g, '').substring(0, 81);
+            const secondPartWords = sanitizedInput.split(" ").slice(-10);
 
             // Create matrix and display
             const matrixContainer = document.getElementById("matrix");
             matrixContainer.innerHTML = '';
             const matrixData = [];
             for (let i = 0; i < 9; i++) {
-                const row = processedInput.substring(i * 9, (i + 1) * 9).split('');
+                const row = firstPart.substring(i * 9, (i + 1) * 9).split('');
                 matrixData.push(row);
                 row.forEach(cell => {
                     const cellDiv = document.createElement('div');
@@ -270,7 +271,7 @@
             // Solve word search puzzle
             const outputContainer = document.getElementById("output");
             outputContainer.innerHTML = '';
-            const solution = solveWordSearch(matrixData, []);
+            const solution = solveWordSearch(matrixData, secondPartWords);
             solution.forEach((result) => {
                 const highlightClass = result.highlightClass;
                 highlightWord(result.positions, result.row, result.col, highlightClass);
@@ -284,10 +285,6 @@
                 }
                 outputContainer.appendChild(resultDiv);
             });
-        }
-
-        function replacePipeWithI(input) {
-            return input.replace(/\|/g, 'I');
         }
 
         function solveWordSearch(matrix, wordsToFind) {
