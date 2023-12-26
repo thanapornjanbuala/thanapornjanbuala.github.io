@@ -125,62 +125,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Camera Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2"></script>
+    <title>Word Search Puzzle Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #matrix {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-gap: 5px;
+            margin-top: 20px;
+        }
+
+        .matrix-cell {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+
+        .output-item {
+            margin-bottom: 10px;
+        }
+
+        .highlight-1 {
+            background-color: yellow;
+        }
+
+        .highlight-2 {
+            background-color: lightblue;
+        }
+
+        .highlight-3 {
+            background-color: lightgreen;
+        }
+
+        .highlight-4 {
+            background-color: lightcoral;
+        }
+
+        .highlight-5 {
+            background-color: lightpink;
+        }
+
+        .highlight-6 {
+            background-color: rgb(57, 130, 130);
+        }
+
+        .highlight-7 {
+            background-color: lightsalmon;
+        }
+
+        .highlight-8 {
+            background-color: rgb(186, 92, 131);
+        }
+
+        .highlight-9 {
+            background-color: rgb(223, 135, 250);
+        }
+
+        .highlight-10 {
+            background-color: rgb(202, 45, 184);
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Web Camera Example</h1>
+    <div class="container">
+        <label for="textInput">ป้อนข้อความ:</label>
+        <input type="text" id="textInput" placeholder="พิมพ์ข้อความที่นี่">
+        <button onclick="displayText()">แสดงข้อความ</button>
+    </div>
 
-    <!-- แสดงภาพจากกล้อง -->
-    <video id="camera" width="640" height="480" autoplay></video>
-
-    <!-- ปุ่มถ่ายรูป -->
-    <button id="captureButton">Capture</button>
-
-    <!-- แสดงรูปถ่าย -->
-    <img id="capturedImage" width="640" height="480">
-
-    <!-- แสดงข้อความจากรูป -->
-    <div id="textOutput"></div>
+    <div id="matrix" class="container"></div>
+    <div id="output" class="container"></div>
 
     <script>
-        // สร้างตัวแปรสำหรับเก็บข้อมูลของกล้อง
-        let video = document.getElementById('camera');
-        let captureButton = document.getElementById('captureButton');
-        let capturedImage = document.getElementById('capturedImage');
-        let textOutput = document.getElementById('textOutput');
+        function displayText() {
+            const userInput = document.getElementById("textInput").value;
+            const firstPart = userInput.replace(/ /g, '').substring(0, 81);
+            const secondPartWords = userInput.split(" ").slice(-10);
 
-        // ทำการเข้าถึงกล้อง
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-                video.srcObject = stream;
-            })
-            .catch(function (error) {
-                console.log("Error accessing camera: ", error);
+            // Create matrix and display
+            const matrixContainer = document.getElementById("matrix");
+            matrixContainer.innerHTML = '';
+            const matrixData = [];
+            for (let i = 0; i < 9; i++) {
+                const row = firstPart.substring(i * 9, (i + 1) * 9).split('');
+                matrixData.push(row);
+                row.forEach(cell => {
+                    const cellDiv = document.createElement('div');
+                    cellDiv.className = 'matrix-cell';
+                    cellDiv.innerText = cell;
+                    matrixContainer.appendChild(cellDiv);
+                });
+            }
+
+            // Solve word search puzzle
+            const outputContainer = document.getElementById("output");
+            outputContainer.innerHTML = '';
+            const solution = solveWordSearch(matrixData, secondPartWords);
+            solution.forEach((result, index) => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'output-item';
+                const foundText = result.found ? 'true' : 'false';
+                const highlightClass = `highlight-${index + 1}`;
+                resultDiv.innerHTML = `Word: <span class="${result.found ? highlightClass : ''}">${result.word}</span>, Found: ${foundText}`;
+                if (result.found) {
+                    resultDiv.innerHTML += `, First Letter: [${result.firstLetter}], Last Letter: [${result.lastLetter}]`;
+                }
+                outputContainer.appendChild(resultDiv);
+            });
+        }
+
+        function solveWordSearch(matrix, wordsToFind) {
+            const solutions = [];
+            wordsToFind.forEach(word => {
+                const sanitizedWord = word.replace(/_/g, '');
+
+                const result = findWord(matrix, sanitizedWord);
+                solutions.push(result);
+            });
+            return solutions;
+        }
+
+        function findWord(matrix, word) {
+            const wordLength = word.length;
+            const directions = [
+                [0, 1], [1, 0], [0, -1], [-1, 0], // horizontal and vertical
+                [1, 1], [1, -1], [-1, 1], [-1, -1] // diagonal
+            ];
+
+            for (let row = 0; row < matrix.length; row++) {
+                for (let col = 0; col < matrix[row].length; col++) {
+                    for (const direction of directions) {
+                        const [dirRow, dirCol] = direction;
+                        let found = true;
+                        let positions = [];
+
+                        for (let i = 0; i < wordLength; i++) {
+                            const newRow = row + i * dirRow;
+                            const newCol = col + i * dirCol;
+
+                            if (
+                                newRow < 0 || newRow >= matrix.length ||
+                                newCol < 0 || newCol >= matrix[row].length ||
+                                matrix[newRow][newCol] !== word[i]
+                            ) {
+                                found = false;
+                                break;
+                            }
+
+                            positions.push([newRow, newCol]);
+                        }
+
+                        if (found) {
+                            highlightWord(positions, row, col);
+                            return {
+                                word: word,
+                                found: true,
+                                firstLetter: [row, col],
+                                lastLetter: positions[positions.length - 1]
+                            };
+                        }
+                    }
+                }
+            }
+
+            return {
+                word: word,
+                found: false
+            };
+        }
+
+        function highlightWord(positions, row, col) {
+            const highlightClass = `highlight-${positions.length}`;
+            positions.forEach(pos => {
+                const [r, c] = pos;
+                const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
+                cell.classList.add(highlightClass);
             });
 
-        // เมื่อคลิกปุ่มถ่ายรูป
-        captureButton.addEventListener('click', function () {
-            // ถ่ายรูป
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // แสดงรูปถ่าย
-            capturedImage.src = canvas.toDataURL('image/png');
-
-            // ทำ OCR
-            Tesseract.recognize(
-                canvas.toDataURL('image/png'),
-                'eng',
-                { logger: info => console.log(info) }
-            ).then(({ data: { text } }) => {
-                // แสดงข้อความจากรูป
-                textOutput.innerText = text;
-            });
-        });
+            // Remove highlights from previous search
+            setTimeout(() => {
+                positions.forEach(pos => {
+                    const [r, c] = pos;
+                    const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
+                    cell.classList.remove(highlightClass);
+                });
+            }, 3000); // Remove highlights after 3 seconds
+        }
     </script>
 </body>
 
