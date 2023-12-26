@@ -249,9 +249,11 @@
     <script>
         function displayText() {
             const userInput = document.getElementById("textInput").value.toUpperCase();
-            const sanitizedInput = userInput.replace(/[^A-Z|]/g, '');
             const firstPart = userInput.replace(/ /g, '').substring(0, 81);
+            const cleanedInput = userInput.replace(/[_.*-]/g, '');
+            const processedInput = cleanedInput.replace(/\|/g, 'I');
             const secondPartWords = userInput.split(" ").slice(-10);
+
 
             // Create matrix and display
             const matrixContainer = document.getElementById("matrix");
@@ -353,7 +355,7 @@
             positions.forEach((pos, index) => {
                 const [r, c] = pos;
                 const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                const intensity = 100 - (index * 15); // Adjust the intensity based on your preference
+                const intensity = 100 - (index * 10); // Adjust the intensity based on your preference
                 const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
                 cell.style.backgroundColor = backgroundColor;
             });
