@@ -360,7 +360,7 @@
             positions.forEach((pos, index) => {
                 const [r, c] = pos;
                 const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                const intensity = 100 - (index * 10); // Adjust the intensity based on your preference
+                const intensity = 100 - (index * 15); // Adjust the intensity based on your preference
                 const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
                 cell.style.backgroundColor = backgroundColor;
             });
