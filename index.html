@@ -245,15 +245,20 @@
 
     <div id="matrix" class="container"></div>
     <div id="output" class="container"></div>
+    <!--<div id="cleanedInput" class="container"></div> -->
 
     <script>
         function displayText() {
             const userInput = document.getElementById("textInput").value.toUpperCase();
-            const firstPart = userInput.replace(/ /g, '').substring(0, 81);
             const cleanedInput = userInput.replace(/[_.*-]/g, '');
             const processedInput = cleanedInput.replace(/\|/g, 'I');
-            const secondPartWords = userInput.split(" ").slice(-10);
+            const firstPart = processedInput.replace(/ /g, '').substring(0, 81);
 
+            // แสดง cleanedInput ที่เพิ่มมา
+            const cleanedInputContainer = document.getElementById("cleanedInput");
+            cleanedInputContainer.innerText = 'Cleaned Input: ' + cleanedInput;
+
+            const secondPartWords = processedInput.split(" ").slice(-10);
 
             // Create matrix and display
             const matrixContainer = document.getElementById("matrix");
