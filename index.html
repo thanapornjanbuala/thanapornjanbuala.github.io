@@ -211,7 +211,7 @@
         }
 
         .highlight-3 {
-            background-color: rgb(0, 0, 255);
+            background-color: rgb(204, 122, 255);
             /* Blue */
         }
 
@@ -249,6 +249,37 @@
             background-color: rgb(0, 128, 0);
             /* Dark Green */
         }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                font-size: 13px;
+                /* Adjust the base font size for smaller screens */
+                align-items: center;
+            }
+
+            .container {
+                width: 95%;
+                /* Make the container width 90% of the viewport */
+            }
+
+            input,
+            button {
+                width: 70%;
+                /* Make input and button full width */
+            }
+
+            #matrix {
+                grid-template-columns: repeat(9, 1fr);
+                /* Adjust the grid columns for smaller screens */
+                font-size: 20px;
+                /* Adjust the font size in the matrix for smaller screens */
+            }
+
+            .matrix-cell {
+                padding: 7px;
+                /* Adjust padding for matrix cells on smaller screens */
+            }
+        }
     </style>
 </head>
 
@@ -256,7 +287,7 @@
     <div class="container">
         <label for="textInput">ป้อนข้อความ:</label>
         <input type="text" id="textInput" placeholder="พิมพ์ข้อความที่นี่">
-        <button onclick="displayText()">แสดงข้อความ</button>
+        <!--<button onclick="displayText()">แสดงข้อความ</button> -->
     </div>
 
     <div id="matrix" class="container"></div>
@@ -264,6 +295,21 @@
     <!--<div id="cleanedInput" class="container"></div> -->
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const textInput = document.getElementById('textInput');
+
+            textInput.addEventListener('paste', function (event) {
+                // ให้โปรแกรมรอจนกว่าคลิปบอร์ดจะมีข้อมูล
+                setTimeout(function () {
+                    // รับข้อมูลที่คัดลอกจากคลิปบอร์ด
+                    const pastedText = textInput.value;
+
+                    // เรียกฟังก์ชัน displayText() เพื่อทำการแสดงผล
+                    displayText();
+                }, 1);
+            });
+        });
         function displayText() {
             const userInput = document.getElementById("textInput").value.toUpperCase();
             const cleanedInput = userInput.replace(/[_.*-]/g, '');
@@ -283,6 +329,7 @@
                     cellDiv.className = 'matrix-cell';
                     cellDiv.innerText = cell;
                     matrixContainer.appendChild(cellDiv);
+                    document.getElementById("textInput").value = '';
                 });
             }
 
@@ -380,7 +427,6 @@
                     const circleDiv = document.createElement('div');
                     circleDiv.className = 'circle';
                     cell.appendChild(circleDiv);
-
 
 
                 }
