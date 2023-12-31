@@ -272,6 +272,7 @@
                 grid-template-columns: repeat(9, 1fr);
                 /* Adjust the grid columns for smaller screens */
                 font-size: 20px;
+                margin-top: 100px;
                 /* Adjust the font size in the matrix for smaller screens */
             }
 
@@ -280,21 +281,48 @@
                 /* Adjust padding for matrix cells on smaller screens */
             }
         }
+
+        .app-bar {
+            background-color: #333;
+            /* Background color of the app bar */
+            color: white;
+            /* Text color of the app bar */
+            padding: 5px;
+            /* Padding for the app bar */
+            text-align: center;
+            /* Center-align the text and input inside the app bar */
+            position: fixed;
+            /* Fix the app bar at the top of the viewport */
+            width: 100%;
+            /* Make the app bar full width */
+            z-index: 1000;
+            /* Set a high z-index to ensure it's above other elements */
+            top: 0;
+        }
+
+        .container {
+            /* ... (existing container styles) ... */
+            margin-top: 10px;
+
+            /* Adjust the margin to make space for the fixed app bar */
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <label for="textInput">ป้อนข้อความ:</label>
+    <div class="app-bar">
+
         <input type="text" id="textInput" placeholder="พิมพ์ข้อความที่นี่">
-        <button onclick="displayText()">แสดงข้อความ</button> 
+        <button onclick="displayText()">แสดงข้อความ</button>
+
     </div>
-
-    <div id="matrix" class="container"></div>
-    <div id="output" class="container"></div>
-    <!--<div id="cleanedInput" class="container"></div> -->
-
+    <div class="container">
+        <div id="matrix" class="container"></div>
+        <div id="output" class="container"></div>
+        <!--<div id="cleanedInput" class="container"></div> -->
+    </div>
     <script>
+
 
         document.addEventListener('DOMContentLoaded', function () {
             const textInput = document.getElementById('textInput');
