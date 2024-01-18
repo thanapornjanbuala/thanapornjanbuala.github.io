@@ -319,7 +319,8 @@
     <div class="container">
         <div id="matrix" class="container"></div>
         <div id="output" class="container"></div>
-        <!--<div id="cleanedInput" class="container"></div> -->
+
+        <div id="cleanedInput" class="container"></div>
     </div>
     <script>
 
@@ -343,7 +344,8 @@
             const cleanedInput = userInput.replace(/[_.*-]/g, '');
             const processedInput = cleanedInput.replace(/\|/g, 'I');
             const firstPart = processedInput.replace(/ /g, '').substring(0, 81);
-            const secondPartWords = processedInput.split(" ").slice(-10);
+            const clean = processedInput.replace(/\n/g, '');
+            const secondPartWords = clean.split(" ").filter(word => word !== '').slice(-10);
 
             // Create matrix and display
             const matrixContainer = document.getElementById("matrix");
@@ -391,12 +393,15 @@
             return solutions;
         }
 
+
         function findWord(matrix, word) {
             const wordLength = word.length;
             const directions = [
                 [0, 1], [1, 0], [0, -1], [-1, 0], // horizontal and vertical
                 [1, 1], [1, -1], [-1, 1], [-1, -1] // diagonal
             ];
+
+            const normalizedWord = word.toUpperCase(); // Convert word to uppercase for case-insensitivity
 
             for (let row = 0; row < matrix.length; row++) {
                 for (let col = 0; col < matrix[row].length; col++) {
@@ -409,11 +414,17 @@
                             const newRow = row + i * dirRow;
                             const newCol = col + i * dirCol;
 
+                            // Check if the position is within the matrix boundaries
                             if (
                                 newRow < 0 || newRow >= matrix.length ||
-                                newCol < 0 || newCol >= matrix[row].length ||
-                                matrix[newRow][newCol] !== word[i]
+                                newCol < 0 || newCol >= matrix[row].length
                             ) {
+                                found = false;
+                                break;
+                            }
+
+                            // Compare characters (case-insensitive)
+                            if (matrix[newRow][newCol].toUpperCase() !== normalizedWord[i]) {
                                 found = false;
                                 break;
                             }
@@ -443,52 +454,29 @@
         }
 
         function highlightWord(positions, row, col, highlightClass) {
-            positions.forEach((pos, index) => {
-                const [r, c] = pos;
-                const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                const intensity = 100 - (index * 12); // Adjust the intensity based on your preference
-                const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
-                cell.style.backgroundColor = backgroundColor;
-
-                // Add a circle around the first letter
-                if (index === 0) {
-                    const circleDiv = document.createElement('div');
-                    circleDiv.className = 'circle';
-                    cell.appendChild(circleDiv);
-
-
-                }
-            });
-
-            // Remove highlights from previous search
-            setTimeout(() => {
-                positions.forEach(pos => {
+            // ตรวจสอบว่า positions ถูกกำหนดค่าและเป็นอาร์เรย์หรือไม่
+            if (Array.isArray(positions)) {
+                positions.forEach((pos, index) => {
                     const [r, c] = pos;
                     const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
-                    cell.style.backgroundColor = ''; // Reset the background color
+                    const intensity = 100 - (index * 12);
+                    const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
+                    cell.style.backgroundColor = backgroundColor;
 
-                    // Remove the circle
-                    const circleDiv = cell.querySelector('.circle');
-                    if (circleDiv) {
-                        cell.removeChild(circleDiv);
+                    if (index === 0) {
+                        const circleDiv = document.createElement('div');
+                        circleDiv.className = 'circle';
+                        cell.appendChild(circleDiv);
                     }
                 });
-            }, 60000); // Remove highlights after 3 seconds
+            }
 
             // Highlight the word in the list below
             const wordList = document.querySelectorAll(`.${highlightClass}`);
             wordList.forEach(wordItem => {
                 wordItem.classList.add('highlighted');
             });
-
-            // Remove highlights from previous searches in the list
-            setTimeout(() => {
-                wordList.forEach(wordItem => {
-                    wordItem.classList.remove('highlighted');
-                });
-            }, 60000); // Remove highlights after 3 seconds
         }
-
         function getColorValues(highlightClass) {
             // Returns RGB color values based on the highlightClass
             switch (highlightClass) {
