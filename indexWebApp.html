@@ -1,0 +1,510 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Reading Practice</title>
+    <link rel="stylesheet" href="indexVer2.css" />
+</head>
+<body>
+    <div class="parent">
+        <div class="div1"> <h1>English Pronounciation Practice</h1></div>
+        <div class="div2"><h2>Click the button to Start</h2></div>
+        <div class="div3"><h3><button id="my-phrase-btn" title="Go to My English Phrase" 
+            onclick="window.location.href='test.html';">Start New Test</button></h3></div>
+        <div class="div4"><h3> <button id="my-phrase-btn" title="Go to My English Phrase" 
+            onclick="window.location.href='myPhraseV2.html';">My English Phrase</button>
+        </h3></div>
+    </div>
+</body>
+</html>
+-->
+<!--
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Input Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #firstPart,
+        #secondPart {
+            font-size: 18px;
+            white-space: pre-line;
+            /* Preserve line breaks in text content */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <label for="textInput">ป้อนข้อความ:</label>
+        <input type="text" id="textInput" placeholder="พิมพ์ข้อความที่นี่">
+        <button onclick="displayText()">แสดงข้อความ</button>
+    </div>
+
+    <p id="firstPart"></p>
+    <button onclick="copyToClipboard('firstPart')">คัดลอกส่วนที่ 1</button>
+
+    <p id="secondPart"></p>
+    <button onclick="copyToClipboard('secondPart')">คัดลอกส่วนที่ 2</button>
+
+    <script>
+        function displayText() {
+            const userInput = document.getElementById("textInput").value;
+
+            // แบ่งตัวอักษรออกเป็นสองส่วน
+            const firstPart = userInput.replace(/ /g, '').substring(0, 81);  // 81 ตัวอักษรแรกไม่นับช่องว่าง
+
+            // แสดงผลลัพธ์ส่วนที่ 1
+            document.getElementById("firstPart").innerText = '';
+
+            // Display the first part in 9 rows, each containing 9 characters
+            for (let i = 0; i < 9; i++) {
+                const row = firstPart.substring(i * 9, (i + 1) * 9);
+                document.getElementById("firstPart").innerText += '\n,' + row;
+            }
+
+            // แสดงผลลัพธ์ส่วนที่ 2 (เหมือนเดิม)
+            const secondPartWords = userInput.split(" ").slice(-10).join(","); // 10 คำสุดท้าย
+            document.getElementById("secondPart").innerText = ' ' + secondPartWords;
+        }
+
+        function copyToClipboard(elementId) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            const dummyTextArea = document.createElement("textarea");
+            document.body.appendChild(dummyTextArea);
+            dummyTextArea.value = textToCopy;
+            dummyTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummyTextArea);
+        }
+    </script>
+</body>
+
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search Puzzle Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 18px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        #matrix {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-gap: 5px;
+            margin-top: 20px;
+        }
+
+        .matrix-cell {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .circle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 255, 0);
+            /* Blue circle */
+            border: 2px solid #000;
+            /* Black border */
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+
+        .output-item {
+            margin-bottom: 10px;
+        }
+
+        .highlighted {
+            background-color: rgb(169, 169, 169);
+            /* Gray */
+        }
+
+        .highlight-1 {
+            background-color: rgb(255, 0, 0);
+            /* Red */
+        }
+
+        .highlight-2 {
+            background-color: rgb(0, 255, 0);
+            /* Green */
+        }
+
+        .highlight-3 {
+            background-color: rgb(204, 122, 255);
+            /* Blue */
+        }
+
+        .highlight-4 {
+            background-color: rgb(255, 255, 0);
+            /* Yellow */
+        }
+
+        .highlight-5 {
+            background-color: rgb(255, 0, 255);
+            /* Magenta */
+        }
+
+        .highlight-6 {
+            background-color: rgb(0, 255, 255);
+            /* Cyan */
+        }
+
+        .highlight-7 {
+            background-color: rgb(255, 128, 0);
+            /* Orange */
+        }
+
+        .highlight-8 {
+            background-color: rgb(128, 0, 255);
+            /* Purple */
+        }
+
+        .highlight-9 {
+            background-color: rgb(128, 128, 128);
+            /* Gray */
+        }
+
+        .highlight-10 {
+            background-color: rgb(0, 128, 0);
+            /* Dark Green */
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                font-size: 13px;
+                /* Adjust the base font size for smaller screens */
+                align-items: center;
+            }
+
+            .container {
+                width: 95%;
+                /* Make the container width 90% of the viewport */
+            }
+
+            input,
+            button {
+                width: 70%;
+                /* Make input and button full width */
+            }
+
+            #matrix {
+                grid-template-columns: repeat(9, 1fr);
+                /* Adjust the grid columns for smaller screens */
+                font-size: 20px;
+                margin-top: 100px;
+                /* Adjust the font size in the matrix for smaller screens */
+            }
+
+            .matrix-cell {
+                padding: 7px;
+                /* Adjust padding for matrix cells on smaller screens */
+            }
+        }
+
+        .app-bar {
+            background-color: #333;
+            /* Background color of the app bar */
+            color: white;
+            /* Text color of the app bar */
+            padding: 5px;
+            /* Padding for the app bar */
+            text-align: center;
+            /* Center-align the text and input inside the app bar */
+            position: fixed;
+            /* Fix the app bar at the top of the viewport */
+            width: 100%;
+            /* Make the app bar full width */
+            z-index: 1000;
+            /* Set a high z-index to ensure it's above other elements */
+            top: 0;
+        }
+
+        .container {
+            /* ... (existing container styles) ... */
+            margin-top: 10px;
+
+            /* Adjust the margin to make space for the fixed app bar */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-bar">
+
+        <input type="text" id="textInput" placeholder="พิมพ์ข้อความที่นี่">
+        <button onclick="displayText()">แสดงข้อความ</button>
+
+    </div>
+    <div class="container">
+        <div id="matrix" class="container"></div>
+        <div id="output" class="container"></div>
+
+        <div id="cleanedInput" class="container"></div>
+    </div>
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const textInput = document.getElementById('textInput');
+
+            textInput.addEventListener('paste', function (event) {
+                // ให้โปรแกรมรอจนกว่าคลิปบอร์ดจะมีข้อมูล
+                setTimeout(function () {
+                    // รับข้อมูลที่คัดลอกจากคลิปบอร์ด
+                    const pastedText = textInput.value;
+
+                    // เรียกฟังก์ชัน displayText() เพื่อทำการแสดงผล
+                    displayText();
+                }, 1);
+            });
+        });
+        function displayText() {
+            const userInput = document.getElementById("textInput").value.toUpperCase();
+            const cleanedInput = userInput.replace(/[_.*-]/g, '');
+            const processedInput = cleanedInput.replace(/\|/g, 'I');
+            const firstPart = processedInput.replace(/ /g, '').substring(0, 81);
+            const clean = processedInput.replace(/\n/g, '');
+            const secondPartWords = clean.split(" ").filter(word => word !== '').slice(-10);
+
+            // Create matrix and display
+            const matrixContainer = document.getElementById("matrix");
+            matrixContainer.innerHTML = '';
+            const matrixData = [];
+            for (let i = 0; i < 9; i++) {
+                const row = firstPart.substring(i * 9, (i + 1) * 9).split('');
+                matrixData.push(row);
+                row.forEach(cell => {
+                    const cellDiv = document.createElement('div');
+                    cellDiv.className = 'matrix-cell';
+                    cellDiv.innerText = cell;
+                    matrixContainer.appendChild(cellDiv);
+                    document.getElementById("textInput").value = '';
+                });
+            }
+
+            // Solve word search puzzle
+            const outputContainer = document.getElementById("output");
+            outputContainer.innerHTML = '';
+            const solution = solveWordSearch(matrixData, secondPartWords);
+            solution.forEach((result) => {
+                const highlightClass = result.highlightClass;
+                highlightWord(result.positions, result.row, result.col, highlightClass);
+
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'output-item';
+                const foundText = result.found ? 'true' : 'false';
+                resultDiv.innerHTML = `Word: <span class="${result.found ? highlightClass + ' highlighted' : ''}">${result.word}</span>, Found: ${foundText}`;
+                if (result.found) {
+                    resultDiv.innerHTML += `, First Letter: [${result.firstLetter}], Last Letter: [${result.lastLetter}]`;
+                }
+                outputContainer.appendChild(resultDiv);
+            });
+        }
+
+        function solveWordSearch(matrix, wordsToFind) {
+            const solutions = [];
+            wordsToFind.forEach((word, index) => {
+                const sanitizedWord = word.replace(/_/g, '');
+
+                const result = findWord(matrix, sanitizedWord);
+                solutions.push({ ...result, highlightClass: `highlight-${index + 1}` });
+            });
+            return solutions;
+        }
+
+
+        function findWord(matrix, word) {
+            const wordLength = word.length;
+            const directions = [
+                [0, 1], [1, 0], [0, -1], [-1, 0], // horizontal and vertical
+                [1, 1], [1, -1], [-1, 1], [-1, -1] // diagonal
+            ];
+
+            const normalizedWord = word.toUpperCase(); // Convert word to uppercase for case-insensitivity
+
+            for (let row = 0; row < matrix.length; row++) {
+                for (let col = 0; col < matrix[row].length; col++) {
+                    for (const direction of directions) {
+                        const [dirRow, dirCol] = direction;
+                        let found = true;
+                        let positions = [];
+
+                        for (let i = 0; i < wordLength; i++) {
+                            const newRow = row + i * dirRow;
+                            const newCol = col + i * dirCol;
+
+                            // Check if the position is within the matrix boundaries
+                            if (
+                                newRow < 0 || newRow >= matrix.length ||
+                                newCol < 0 || newCol >= matrix[row].length
+                            ) {
+                                found = false;
+                                break;
+                            }
+
+                            // Compare characters (case-insensitive)
+                            if (matrix[newRow][newCol].toUpperCase() !== normalizedWord[i]) {
+                                found = false;
+                                break;
+                            }
+
+                            positions.push([newRow, newCol]);
+                        }
+
+                        if (found) {
+                            return {
+                                word: word,
+                                found: true,
+                                firstLetter: [row, col],
+                                lastLetter: positions[positions.length - 1],
+                                positions: positions,
+                                row: row,
+                                col: col
+                            };
+                        }
+                    }
+                }
+            }
+
+            return {
+                word: word,
+                found: false
+            };
+        }
+
+        function highlightWord(positions, row, col, highlightClass) {
+            // ตรวจสอบว่า positions ถูกกำหนดค่าและเป็นอาร์เรย์หรือไม่
+            if (Array.isArray(positions)) {
+                positions.forEach((pos, index) => {
+                    const [r, c] = pos;
+                    const cell = document.querySelector(`.matrix-cell:nth-child(${r * 9 + c + 1})`);
+                    const intensity = 100 - (index * 12);
+                    const backgroundColor = `rgba(${getColorValues(highlightClass)}, ${intensity / 100})`;
+                    cell.style.backgroundColor = backgroundColor;
+
+                    if (index === 0) {
+                        const circleDiv = document.createElement('div');
+                        circleDiv.className = 'circle';
+                        cell.appendChild(circleDiv);
+                    }
+                });
+            }
+
+            // Highlight the word in the list below
+            const wordList = document.querySelectorAll(`.${highlightClass}`);
+            wordList.forEach(wordItem => {
+                wordItem.classList.add('highlighted');
+            });
+        }
+        function getColorValues(highlightClass) {
+            // Returns RGB color values based on the highlightClass
+            switch (highlightClass) {
+                case 'highlight-1':
+                    return '255, 0, 0'; // Red
+                case 'highlight-2':
+                    return '0, 255, 0'; // Green
+                case 'highlight-3':
+                    return '0, 0, 255'; // Blue
+                case 'highlight-4':
+                    return '255, 255, 0'; // Yellow
+                case 'highlight-5':
+                    return '255, 0, 255'; // Magenta
+                case 'highlight-6':
+                    return '0, 255, 255'; // Cyan
+                case 'highlight-7':
+                    return '255, 128, 0'; // Orange
+                case 'highlight-8':
+                    return '128, 0, 255'; // Purple
+                case 'highlight-9':
+                    return '128, 128, 128'; // Gray
+                case 'highlight-10':
+                    return '0, 128, 0'; // Dark Green
+                default:
+                    return '255, 255, 255'; // White (default)
+            }
+        }
+    </script>
+</body>
+
+</html>
