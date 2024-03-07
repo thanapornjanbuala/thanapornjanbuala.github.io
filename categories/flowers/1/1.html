@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Game</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="parent">
+        <div class="div1"></div>
+        <div class="div3">
+            <div id="home"><img src="../../home.png" alt=""></div>
+        </div>
+        <div class="div4">
+            <h1>Flowers</h1>
+        </div>
+        <div class="div7">
+            <div id="timerContainer">
+                <img src="../../clock.png" alt="">
+                <span id="timerDisplay">5:00</span>
+            </div>
+        </div>
+        <div class="div8">
+            <p>Moved</p>
+            <div id="attemptsCounter"> 0 time</div>
+        </div>
+        <div class="div5">
+            <h2>What is this?</h2>
+        </div>
+        <div class="div6">
+            <input type="text" id="textInput" placeholder="type your answer here..">
+            <button id="checkButton" onclick="checkAnswer()"> Submit your answer</button>
+        </div>
+        <div class="div9">
+
+            <div id="resultContainer">
+                <img src="" id="resultImage" alt="">
+                <p id="resultText"></p>
+            </div>
+
+            <button id="nextButton" onclick="nextQuestion()">Next</button>
+        </div>
+        <div class="div2">
+            <br>
+            <div class="grid-container" id="grid-container">
+                <div class="grid-item" id="grid-item-1" ondrop="drop(event, 'grid-item-1')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-2" ondrop="drop(event, 'grid-item-2')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-3" ondrop="drop(event, 'grid-item-3')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-4" ondrop="drop(event, 'grid-item-4')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-5" ondrop="drop(event, 'grid-item-5')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-6" ondrop="drop(event, 'grid-item-6')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-7" ondrop="drop(event, 'grid-item-7')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-8" ondrop="drop(event, 'grid-item-8')"
+                    ondragover="allowDrop(event)">
+                </div>
+                <div class="grid-item" id="grid-item-9" ondrop="drop(event, 'grid-item-9')"
+                    ondragover="allowDrop(event)">
+                </div>
+            </div>
+
+            <div class="image-container" id="image-container">
+                <img src="1.jpg" alt="1.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="6.jpg" alt="6.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="9.jpg" alt="9.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="3.jpg" alt="3.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="8.jpg" alt="8.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="2.jpg" alt="2.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="7.jpg" alt="7.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="5.jpg" alt="5.jpg" draggable="true" ondragstart="drag(event)">
+                <img src="4.jpg" alt="4.jpg" draggable="true" ondragstart="drag(event)">
+            </div>
+
+        </div>
+        <script>
+            document.getElementById("home").addEventListener("click", function () {
+                window.location.href = "../../../index.html";
+            });
+            var attempts = 0;
+            var timer;
+            var timeRemaining = 300; // 5 minutes in seconds
+
+            function startTimer() {
+                timer = setInterval(function () {
+                    timeRemaining--;
+                    updateTimerDisplay();
+
+                    if (timeRemaining <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            }
+
+            function updateTimerDisplay() {
+                var minutes = Math.floor(timeRemaining / 60);
+                var seconds = timeRemaining % 60;
+
+                var displayMinutes = minutes < 10 ? "0" + minutes : minutes;
+                var displaySeconds = seconds < 10 ? "0" + seconds : seconds;
+
+                document.getElementById("timerDisplay").textContent = displayMinutes + ":" + displaySeconds;
+            }
+
+            function allowDrop(ev) {
+                ev.preventDefault();
+            }
+
+            function drag(ev) {
+                if (!timer) {
+                    startTimer();
+                }
+                ev.dataTransfer.setData("text", ev.target.alt);
+            }
+
+            function drop(ev, targetId) {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                var targetElement = document.getElementById(targetId);
+
+                while (targetElement.firstChild) {
+                    targetElement.removeChild(targetElement.firstChild);
+                }
+
+                var droppedImage = new Image();
+                droppedImage.src = data;
+                droppedImage.alt = data;
+                droppedImage.style.width = "100%";
+                targetElement.appendChild(droppedImage);
+
+                checkAnswer();
+            }
+
+            function checkAnswer() {
+                var correctText = "rose";
+                var enteredText = document.getElementById("textInput").value.trim().toLowerCase();
+
+                var correctPlacement = true;
+                var expectedOrder = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg", "9.jpg"];
+
+                for (var i = 0; i < expectedOrder.length; i++) {
+                    var gridItem = document.getElementById("grid-item-" + (i + 1));
+                    if (!gridItem.children[0] || gridItem.children[0].alt !== expectedOrder[i]) {
+                        correctPlacement = false;
+                        break;
+                    }
+                }
+
+                var resultContainer = document.getElementById("resultContainer");
+                var resultImage = document.getElementById("resultImage");
+                var resultText = document.getElementById("resultText");
+                var nextButton = document.getElementById("nextButton");
+
+                if (correctText === enteredText && correctPlacement) {
+                    var score = calculateTotalScore();
+                    resultImage.src = "r.jpg";
+                    resultImage.alt = "Correct Image";
+                    resultText.textContent = "You did great! This is " + correctText + ". " + " Quiz Score " + calculateAttemptScore() +
+                        " Time Bonus " + timeRemaining + " s : " + calculateTimeBonus() +
+                        " Total Score " + calculateTotalScore() + "!";
+
+                    nextButton.style.display = "block";
+                    endGame(); // Stop the timer when the answer is correct
+                } else {
+                    resultText.textContent = "Keep trying!";
+                    nextButton.style.display = "none";
+                }
+
+                resultContainer.style.display = "block";
+                attempts++;
+
+                // อัพเดทจำนวนครั้งที่ทายไปแล้ว
+                document.getElementById("attemptsCounter").textContent = " " + attempts + " times";
+            }
+
+            function calculateAttemptScore() {
+                var baseScore = 2000;
+                return Math.max(0, baseScore - (attempts) * 100 - 100);
+            }
+
+            function calculateTimeBonus() {
+                var timeBonus = Math.max(0, timeRemaining * 5);
+                return timeBonus;
+            }
+
+            function calculateTotalScore() {
+                return calculateAttemptScore() + calculateTimeBonus();
+            }
+
+
+            function endGame() {
+                clearInterval(timer);
+                document.getElementById("timerDisplay").textContent = "0:00";
+            }
+
+            function nextQuestion() {
+                clearInterval(timer);
+                document.getElementById("timerDisplay").textContent = "0:00";
+                window.location.href = '../2/2.html';
+            }
+
+        </script>
+    </div>
+</body>
+
+</html>

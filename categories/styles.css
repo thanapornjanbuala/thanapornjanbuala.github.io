@@ -1,0 +1,100 @@
+.parent {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(15, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.div1 {
+    grid-area: 3 / 7 / 12 / 15;
+}
+
+.div2 {
+    grid-area: 13 / 2 / 15 / 20;
+}
+
+.div3 {
+    grid-area: 3 / 2 / 5 / 6;
+}
+
+.div4 {
+    grid-area: 6 / 2 / 7 / 6;
+}
+
+.div5 {
+    grid-area: 1 / 7 / 3 / 15;
+}
+
+.div6 {
+    grid-area: 4 / 16 / 11 / 20;
+}
+
+.div7 {
+    grid-area: 1 / 18 / 3 / 20;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+}
+
+.grid-item {
+    height: 100px;
+    background-color: lightgray;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+.grid-item img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.image-container img {
+    width: 50px;
+    margin: 0 5px;
+    cursor: grab;
+}
+
+.image-container img:active {
+    cursor: grabbing;
+}
+
+#checkButton {
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#nextButton {
+    margin-top: 20px;
+    cursor: pointer;
+    display: none;
+}
+
+#textInput {
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+#resultContainer {
+    margin-top: 20px;
+}
+
+#resultImage {
+    width: 100px;
+    margin-bottom: 10px;
+}

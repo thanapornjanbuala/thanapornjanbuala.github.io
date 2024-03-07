@@ -1,0 +1,210 @@
+body {
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Dancing Script', cursive;
+    background-image: url('../bg.jpg');
+}
+
+.grid-container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+}
+
+.grid-item {
+    height: 100px;
+    width: 100px;
+    background-color: rgba(214, 226, 89, 0.652);
+    border: 1px solid rgba(0, 0, 0, 0.55);
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+.grid-item img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+.image-container {
+
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    background-color: rgb(187, 155, 255);
+    padding: 6px;
+    border-radius: 2cqmax;
+}
+
+.image-container img {
+    width: 85px;
+    padding: 2px;
+    margin-left: 30px;
+    align-self: start;
+    cursor: grab;
+}
+
+.image-container img:active {
+    cursor: grabbing;
+}
+
+#checkButton {
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#nextButton {
+    margin-top: 20px;
+    cursor: pointer;
+    display: none;
+}
+
+#textInput {
+    margin-bottom: 20px;
+    padding: 5px;
+}
+
+#resultContainer {
+    margin-top: 20px;
+}
+
+#timerContainer {
+    padding-left: 50px;
+    align-self: start;
+}
+
+
+#attemptsCounter {
+    padding-left: 50px;
+    align-self: start;
+}
+
+#resultImage {
+    width: 100px;
+    margin-bottom: 10px;
+    border: radius 2px;
+
+}
+
+#home {
+    width: 20px;
+    height: 20px;
+}
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.div1 {
+    grid-area: 2 / 2 / 8/ 10;
+    background-color: rgba(214, 226, 89, 0.652);
+    justify-content: center;
+    border-radius: 2cqmax;
+
+
+}
+
+.div2 {
+    grid-area: 2 / 11 / 8 / 20;
+    background-color: rgba(255, 255, 255, 0.628);
+    justify-content: center;
+    border-radius: 2cqmax;
+
+}
+
+.div3 img {
+    width: 70px;
+    padding-right: 40px;
+}
+
+.div3 {
+    grid-area: 2 / 2 / 3 / 3;
+    background-color: rgb(255, 255, 255);
+    justify-content: center;
+    align-content: center;
+    border-radius: 2cqmax 0 2cqmax 0;
+    padding-left: 5px;
+    margin-bottom: 20px;
+}
+
+.div4 {
+    grid-area: 2 / 4 / 3 / 9;
+    background-color: rgba(8, 0, 255, 0.343);
+    justify-content: center;
+    text-align: center;
+    border-radius: 0 0 2cqmax 2cqmax;
+    margin-bottom: 10px;
+}
+
+.div5 {
+    grid-area: 3 / 6 / 5 / 10;
+    background-color: rgba(187, 155, 255, 0.454);
+    justify-content: center;
+    text-align: center;
+    border-radius: 2cqmax;
+    margin: 0 20px 0 20px;
+}
+
+
+.div6 {
+    grid-area: 4 / 6 / 5 / 10;
+    background-color: rgba(185, 185, 185, 0);
+    justify-content: center;
+    text-align: center;
+    border-radius: 2cqmax;
+}
+
+.div7 img {
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+}
+
+.div7 {
+    grid-area: 3 / 3 / 5 / 6;
+    background-color: rgb(255, 255, 255);
+    color: rgb(74, 3, 94);
+    font-size: 25px;
+    padding-top: 10px;
+    padding-right: 30px;
+    margin-bottom: 20px;
+    border-radius: 2cqmax;
+    display: flex;
+
+}
+
+.div8 {
+    grid-area: 4 / 3 / 5 / 6;
+    background-color: rgb(187, 155, 255);
+    border-radius: 0 0 2cqmax 2cqmax;
+    display: flex;
+    text-align: center;
+    font-size: 25px;
+    padding-left: 20px;
+    padding-top: 10px;
+
+}
+
+.div9 {
+    grid-area: 5 / 3 / 8 / 10;
+    background-color: rgb(255, 255, 255);
+    justify-content: center;
+    border-radius: 2cqmax;
+    margin: 20px 20px 20px 0;
+    text-align: center;
+    padding-left: 70px;
+    padding-right: 70px;
+}
+
+.div9 button {
+    margin: 15px;
+}
