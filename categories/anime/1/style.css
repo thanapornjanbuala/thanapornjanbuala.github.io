@@ -179,7 +179,7 @@ body {
     grid-area: 3 / 3 / 5 / 6;
     background-color: rgb(255, 255, 255);
     color: rgb(74, 3, 94);
-    font-size: 25px;
+    font-size: 24px;
     padding-top: 10px;
     padding-right: 30px;
     margin-bottom: 20px;
@@ -195,7 +195,7 @@ body {
     border-radius: 0 0 2cqmax 2cqmax;
     display: flex;
     text-align: center;
-    font-size: 24px;
+    font-size: 25px;
     padding-left: 20px;
     padding-top: 10px;
     border: 2px solid rgb(0, 0, 0);
